@@ -46,6 +46,7 @@
 #define PORT_LOADOBJS_BCTRL 0x827562e4          // bctrl to Object::PreLoad insie of DirLoader::LoadObjs
 #define PORT_SONGMGR_ISDEMO_CHECK 0x82575f9c    // "bne" after IsUGC check inside SongMgr::IsDemo
 #define PORT_STAGEKIT_EXISTS 0x8228d03c         // StageKit check. nop over to allow for fog command without a physical StageKit connected.
+#define PORT_RND_ENDWORLD_CALL 0x8240f04c       // call to Rnd::EndWorld in Rnd::EndDrawing
 // function patch addresses
 #define PORT_SETDISKERROR 0x82516320                 // PlatformMgr::SetDiskError
 #define PORT_APP_RUN 0x82272e90                      // App::Run
@@ -127,6 +128,10 @@
 #define PORT_INITSONGMETADATA 0x827aa450             // InitSongMetadata
 #define PORT_UPDATEPRESENCE 0x82680430               // PresenceMgr::UpdatePresence
 #define PORT_STEPSEQUENCEJOBSETSTEP 0x82af92b8       // Quazal::StepSequenceJob::SetStep
+#define PORT_RND_OVERLAY_DRAWALL 0x824171c0          // RndOverlay::DrawAll
+#define PORT_RND_ENDWORLD 0x8240ef20                 // Rnd::EndWorld
+#define PORT_RND_ONTOGGLEHEAP 0x82412b38             // Rnd::OnToggleHeap
+#define PORT_RND_PREINIT 0x82416138                  // Rnd::PreInit
 // instance addresses
 #define PORT_MODIFIERMGR_POINTER 0x82dfec08 // pointer to ModifierManager
 #define PORT_ROCKCENTRALGATEWAY 0x82cc8f60  // address of RockCentralGateway
@@ -188,6 +193,8 @@ void DbgPrint(const char *s, ...);
 #define PORT_MICCHECK 0x8024a4e8                // a bne that throws an error on the song select screen if the mic is not connected
 #define PORT_BIGSYMBOLFUNC_TAIL 0x8037a3d4      // blr after a function that initialises a bunch of symbols
 #define PORT_UPDATEPRESENCEBLOCK_B 0x80188194   // branch after the failure case in a function that calls UpdatePresence
+#define PORT_RND_ENDWORLD_CALL 0x8063b7a8       // call to Rnd::EndWorld in Rnd::EndDrawing
+#define PORT_RND_UPDATEHEAP_CALL 0x8063b86c     // call to Rnd::UpdateHeap in Rnd::UpdateOverlay
 // #define PORT_LOADOBJS_BCTRL 0x827562e4
 // function patch addresses
 #define PORT_SETDISKERROR 0x8030ce7c             // PlatformMgr::SetDiskError
@@ -250,6 +257,13 @@ void DbgPrint(const char *s, ...);
 #define PORT_INITSONGMETADATA 0x805147a4         // InitSongMetadata
 #define PORT_UPDATEPRESENCE 0x801879d4           // PresenceMgr::UpdatePresence
 #define PORT_STEPSEQUENCEJOBSETSTEP 0x80025364   // Quazal::StepSequenceJob::SetStep
+#define PORT_MEMFREEBLOCKSTATS 0x80352b00        // MemFreeBlockStats
+#define PORT_MEMNUMHEAPS 0x803545a4              // MemNumHeaps
+#define PORT_MEMHEAPNAME 0x8035463c              // MemHeapName
+#define PORT_TEXTSTREAM_WRITE 0x8037a940         // TextStream::operator<<(const char *)
+#define PORT_RND_OVERLAY_DRAWALL 0x80617c8c      // RndOverlay::DrawAll
+#define PORT_RND_OVERLAY_SETLINES 0x8061800c     // RndOverlay::SetLines
+#define PORT_RND_ENDWORLD 0x8063afa8             // Rnd::EndWorld
 // instance addresses
 #define PORT_MODIFIERMGR_POINTER 0x808fda68 // pointer to ModifierManager
 #define PORT_ROCKCENTRALGATEWAY 0x80900870  // address of RockCentralGateway
@@ -265,6 +279,8 @@ void DbgPrint(const char *s, ...);
 #define PORT_THEBANDUSERMGR 0x808f9350      // pointer to TheBandUserMgr
 #define PORT_THEGAME 0x808f9758             // pointer to TheGame (you lost)
 #define PORT_OBJECTDIRMAINDIR 0x8091b1e8    // ObjectDir::sMainDir
+#define PORT_GCURHEAP 0x80898d98            // current heap selected by the memory overlay
+#define PORT_MEMHEAPS 0x8097c520            // memory manager heap array
 // string pointers
 #define PORT_NASWII_AC_URL 0x808e2310
 #define PORT_NASWII_PR_URL 0x808e2390
@@ -391,10 +407,15 @@ void DbgPrint(const char *s, ...);
 // #define PORT_THEGAME 0                      // pointer to TheGame (you lost)
 // #define PORT_OBJECTDIRMAINDIR 0             // ObjectDir::sMainDir
 // ps3 usb specific hooks
-#define PORT_LDDREGISTERTAIL 0x008e4240  // the "ld r2" instruction after the final call to cellUsbdRegisterExtraLdd2
-#define PORT_LDDADDRESS 0x00f1bf1c       // just one of the LDDs. doesn't matter which. this one is RockBandKeyboard
-#define PORT_ISUSBDEVICEVALID 0x008e1074 // function called by the Probe LDD function that checks if a device is valid
-
+#define PORT_LDDREGISTERTAIL 0x008e4240     // the "ld r2" instruction after the final call to cellUsbdRegisterExtraLdd2
+#define PORT_LDDADDRESS 0x00f1bf1c          // just one of the LDDs. doesn't matter which. this one is RockBandKeyboard
+#define PORT_ISUSBDEVICEVALID 0x008e1074    // function called by the Probe LDD function that checks if a device is valid
+// xs
+#define PORT_RND_ENDWORLD_CALL 0x007a19a0   // call to Rnd::EndWorld in Rnd::EndDrawing
+#define PORT_RND_OVERLAY_DRAWALL 0x0077734c        // RndOverlay::DrawAll
+#define PORT_RND_ENDWORLD 0x007a18b4               // Rnd::EndWorld
+#define PORT_RND_ONTOGGLEHEAP 0x007a21a0           // Rnd::OnToggleHeap
+#define PORT_RND_PREINIT 0x007a6404                 // Rnd::PreInit
 // define logging functions
 extern int _sys_printf(char *fmt, ...);
 #define RB3E_PRINT _sys_printf
