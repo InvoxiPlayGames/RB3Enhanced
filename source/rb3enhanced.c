@@ -314,6 +314,21 @@ void InitialiseFunctions()
     // TODO: port these to Wii
     POKE_STUB(DataFindArray, PORT_DATAARRAYFINDARRAY);
     POKE_STUB(DataFindData, PORT_DATAARRAYFINDDATA);
+    POKE_STUB(RndPreInit, PORT_RND_PREINIT);
+    POKE_STUB(RndOnToggleHeap, PORT_RND_ONTOGGLEHEAP);
+#endif
+
+#ifndef RB3E_WII_BANK8
+    POKE_STUB(MemNumHeaps, PORT_MEMNUMHEAPS);
+    POKE_STUB(RndEndWorld, PORT_RND_ENDWORLD);
+    POKE_STUB(RndOverlayDrawAll, PORT_RND_OVERLAY_DRAWALL);
+#endif
+
+#if defined(RB3E_WII) && !defined(RB3E_WII_BANK8)
+    POKE_STUB(MemFreeBlockStats, PORT_MEMFREEBLOCKSTATS);
+    POKE_STUB(MemHeapName, PORT_MEMHEAPNAME);
+    POKE_STUB(RndOverlaySetLines, PORT_RND_OVERLAY_SETLINES);
+    POKE_STUB(TextStreamWrite, PORT_TEXTSTREAM_WRITE);
 #endif
 
 #ifdef RB3E_XBOX
@@ -362,6 +377,9 @@ void InitialiseFunctions()
 
 void ApplyHooks()
 {
+#ifndef RB3E_WII_BANK8
+    InitialiseMemoryOverlay();
+#endif
     POKE_PLUGIN_B(PORT_DATAINITFUNCS_TAIL, PLUGIN_PTR(AddDTAFunctions));
     POKE_PLUGIN_B(PORT_ISSUPPORTEDLANGUAGE, PLUGIN_PTR(IsSupportedLanguageHook));
     POKE_PLUGIN_BL(PORT_OPTIONSTR_DEFINE, PLUGIN_PTR(DefinesHook));
